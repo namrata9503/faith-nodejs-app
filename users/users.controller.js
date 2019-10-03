@@ -10,23 +10,18 @@ const Role = require('../_helpers/role');
 // routes
 router.post('/authenticate', authenticate); //public route
 router.post('/register', register); //public route
+
 //router.get('/', getAll);   // for admin only
 router.get('/', authorize(Role.Admin), getAll); // admin only
-router.get('/:id', authorize(), getById);       // all authenticated users
+router.get('/:id', getById);       // all authenticated users
+router.post('/user/:email',  getByEmail);       // public routes
 
 router.get('/current', getCurrent);
 router.get('/:id', getById);
 router.put('/:id', update);
 router.delete('/:id', _delete);
 router.get('/rows/count', countRows); // admin only
-
 router.get('/customers', getAllCustomers);
-
-
-
-
-
-
 module.exports = router;
 
 
@@ -41,7 +36,24 @@ function authenticate(req, res, next) {
         .catch(err => next(err));
         //console.log(err)
 }
+function getByEmail(req, res, next) {
+    console.log('controller ',req.params.email);
 
+    userService.getByEmail(req.params.email)
+        .then(user => user ? res.json(user) : res.status(400).json({
+            message: 'Email is incorrect'
+            
+        }))
+        .catch(err => next(err));
+       
+}
+function getById(req, res, next) {
+    const id = parseInt(req.params.id);
+
+    userService.getById(req.params.id)
+        .then(user => user ? res.json(user) : res.sendStatus(404))
+        .catch(err => next(err));
+}
 function register(req, res, next) {
     userService.create(req.body)
         .then(() => res.json({}))
@@ -49,12 +61,15 @@ function register(req, res, next) {
 
 }
 
+
 function getAll(req, res, next) {
     userService.getAll()
         .then(users => res.json(users))
         .catch(err => next(err));
 
 }
+
+
 
 function countRows(req, res, next) {
     userService.indexCount()
@@ -69,6 +84,8 @@ function getCurrent(req, res, next) {
 }
 
 function getById(req, res, next) {
+    const id = parseInt(req.params.id);
+
     userService.getById(req.params.id)
         .then(user => user ? res.json(user) : res.sendStatus(404))
         .catch(err => next(err));

@@ -1,6 +1,8 @@
 const config = require('../config.json');
+require('dotenv').config()
+
 const mongoose = require('mongoose');
-const conn= mongoose.connect('mongodb+srv://namrata:Swapnac123@cluster0-jvvsr.mongodb.net/faith?retryWrites=true' || config.connectionString, { useCreateIndex: true, useNewUrlParser: true });
+const conn= mongoose.connect(process.env.DB_CONNECTION || config.connectionString, { useCreateIndex: true, useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 module.exports = {
    // Admin: require('../models/admin'),
