@@ -34,8 +34,7 @@ const server = app.listen(port, function () {
 });
 //require('dotenv').config({path : './.env'});
 require('dotenv').config()
-console.log('env ',process.env.EMAIL)
-console.log('config env ',require('dotenv').config())
+
 
 //require('dotenv/config')
 //require('./users/resetModule')
