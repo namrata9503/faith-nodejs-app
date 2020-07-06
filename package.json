@@ -30,6 +30,7 @@
         "moment": "^2.24.0",
         "mongodb": "^3.2.7",
         "mongoose": "^5.7.1",
+        "ng-recaptcha": "^4.3.0",
         "nodemailer": "^2.7.2",
         "nodemailer-smtp-transport": "^2.7.4",
         "passport": "^0.4.0",

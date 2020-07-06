@@ -167,6 +167,7 @@ app.post('/user/:email', async function sendPasswordResetEmail(req, res) {
     transporter.sendMail(emailTemplate, (err, info) => {
       if (err) {
         res.status(500).json("Error sending email")
+        console.log("Error sending email", emailTemplate, err);
       }
       res.json(" sent email");
 
@@ -192,10 +193,10 @@ app.post('/new/:userId/:token',  receiveNewPassword = (req, res) => {
       const secret = user.password + "-" + user.createdDate
       console.log("_id ",userId)
       console.log("secret ",secret)
-      console.log("pwd ",user.password)
+      console.log("date ",user.createdDate)
 
       const payload = jwtDecode(token, secret)
-      console.log("paylod ", payload.iat);
+      console.log("paylod exp", payload.exp);
 
       if (payload.userId === user.id) {
         bcrypt.genSalt(10, function(err, salt) {

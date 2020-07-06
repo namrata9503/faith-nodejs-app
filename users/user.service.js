@@ -46,17 +46,20 @@ module.exports = {
     getByEmail
 };
 
+var d = new Date();
 
+var calculatedExpiresIn = (((d.getTime()) + (60 * 60 * 1000)) - (d.getTime() - d.getMilliseconds()) / 1000);
 // `secret` is passwordHash concatenated with user's createdAt,
 // so if someones gets a user token they still need a timestamp to intercept.
  function usePasswordHashToMakeToken  ({
+     
     password: passwordHash,
     _id: userId,
     createdDate
   })  {
     const secret = passwordHash + "-" + createdDate
     const token = jwt.sign({ userId }, secret, {
-      expiresIn: 3600 // 1 hour
+        expiresIn: calculatedExpiresIn  // 1 hour
     })
     return token
   }
